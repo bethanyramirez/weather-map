@@ -7,54 +7,93 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
 
     <style>
-        #search-city {
-            float: left;
-            position: absolute;
-            z-index: 1;
-            left: 1em;
-            top: 1em;
+
+        body {
+            background-color: #9e9e9e3d;
+            color: darkblue;
         }
+
+        a {
+            font-weight: normal;
+            font-size: .85em;
+            text-transform: uppercase;
+            color: #eca557;
+        }
+
+        .title {
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+        }
+
+        .high-temp {
+
+            font-size: 2.25em;
+            font-weight: lighter;
+        }
+
+        .low-temp {
+
+            font-size: .75em;
+            font-weight: lighter;
+            color: dimgrey;
+        }
+
     </style>
 </head>
 <body>
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.css' type='text/css' />
 
-<div class="container bg-secondary">
-    <h1 class ="display-4 text-center bg-secondary">WEATHER MAP - MOONRISE KINGDOM</h1>
+<div class="container title">
+    <h1 class ="text-center title">Weather Map</h1>
+    <!--<div class="test"><span>3 Day Forecast for </span><a href="#" id="next-3-days">Next 3 Days</a></div>-->
+<div class="row title">
+    <div class="col-12 col-md-4 border">
+        <h3 id="temp1"></h3>
+        <image id="icon1" class="d-none d-sm-block"></image>
+        <h6 id="weather1"></h6>
+        <h6><a href="#" class="more-weather d-none d-sm-block">More</a></h6>
 
-<div class="row">
-    <div class="col border text-center">
-        <h2 id="temp1" class="text-center"></h2>
-        <image id="icon1" class="text-center"></image>
-        <h4 id="weather1" class="text-center"></h4>
-        <h4 id="humidity1" class="text-center"></h4>
-        <h4 id="wind1" class="text-center"></h4>
-        <h4 id="pressure1" class="text-center"></h4>
+        <div class="toggle-div">
+            <h6 id="humidity1"></h6>
+            <h6 id="wind1"></h6>
+            <h6 id="pressure1"></h6>
+        </div> <!--end of test div-->
     </div>
-    <div class="col border text-center">
-        <h2 id="temp2" class="text-center"></h2>
-        <image id="icon2" class="text-center"></image>
-        <h4 id="weather2" class="text-center"></h4>
-        <h4 id="humidity2" class="text-center"></h4>
-        <h4 id="wind2" class="text-center"></h4>
-        <h4 id="pressure2" class="text-center"></h4>
+    <div class="col-12 col-md-4">
+        <h3 id="temp2" ></h3>
+        <image id="icon2" class="d-none d-sm-block" ></image>
+        <h6 id="weather2" ></h6>
+        <h6><a href="#" class="more-weather d-none d-sm-block">More</a></h6>
+
+        <div class="toggle-div">
+            <h6 id="humidity2" ></h6>
+            <h6 id="wind2" ></h6>
+            <h6 id="pressure2" ></h6>
+        </div> <!--end of test div-->
     </div>
-    <div class="col border text-center">
-        <h2 id="temp3" class="text-center"></h2>
-        <image id="icon3" class="text-center"></image>
-        <h4 id="weather3" class="text-center"></h4>
-        <h4 id="humidity3" class="text-center"></h4>
-        <h4 id="wind3" class="text-center"></h4>
-        <h4 id="pressure3" class="text-center"></h4>
+    <div class="col-12 col-md-4">
+        <h3 id="temp3" ></h3>
+        <image id="icon3" class="d-none d-sm-block"></image>
+        <h6 id="weather3" ></h6>
+        <h6><a href="#" class="more-weather d-none d-sm-block">More</a></h6>
+
+        <div class="toggle-div">
+            <h6 id="humidity3" ></h6>
+            <h6 id="wind3" ></h6>
+            <h6 id="pressure3" ></h6>
+        </div>
 
     </div>
 
-
-    </div>
-    <!-- map div -->
     <div id='map' style='width: 100%; height: 450px;'></div>
-</div>
+
+    </div><!-- end of row -->
+    <!-- map div -->
+</div><!--end of wrapper container-->
 
 
 
@@ -74,6 +113,7 @@
 <script>
 
    var response =  $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/29.4241,-98.4936");
+
    var icons = [
        {
            name: 'clear-day',
@@ -85,15 +125,15 @@
        },
        {
            name: 'rain',
-           image: "img/icons/animated/rainy-1"// path;
+           image: "img/icons/animated/rainy-1.svg"// path;
        },
        {
            name: 'snow',
-           snow: "img/icons/animated/snowy-1"// path;
+           image: "img/icons/animated/snowy-1.svg"// path;
        },
        {
            name: 'sleet',
-           image: "img/icons/animated/snowy-2"// path;
+           image: "img/icons/animated/snowy-2.svg"// path;
        },
        {
            name: 'wind',
@@ -118,36 +158,38 @@
 
    ];
 
-       response.done(function () {
+       response.done(function (data) {
 
-           var highTemp1 = Math.round(response.responseJSON.daily.data[0].temperatureHigh);
-           var lowTemp1 = Math.round(response.responseJSON.daily.data[0].temperatureLow);
-
-           var highTemp2 = Math.round(response.responseJSON.daily.data[1].temperatureHigh);
-           var lowTemp2 = Math.round(response.responseJSON.daily.data[1].temperatureLow);
-
-           var highTemp3 = Math.round(response.responseJSON.daily.data[2].temperatureHigh);
-           var lowTemp3 = Math.round(response.responseJSON.daily.data[2].temperatureLow);
-
-           $("#temp1").html(highTemp1 + "&#8457; / " + lowTemp1 + "&#8457;");
-           $("#temp2").html(highTemp2 + "&#8457; / " + lowTemp2 + "&#8457;");
-           $("#temp3").html(highTemp3 + "&#8457; / " + lowTemp3 + "&#8457;");
-
-           // val();
+           console.log(data);
 
 
            for (var i = 0; i < 3; i++) {
-               var iconValue = response.responseJSON.daily.data[i].icon;
-               var summary = response.responseJSON.daily.data[i].summary;
-               var wind = response.responseJSON.daily.data[i].windSpeed;
-               var pressure = response.responseJSON.daily.data[i].pressure;
-               var humidity = response.responseJSON.daily.data[i].humidity;
+               var highTemp = Math.round(data.daily.data[i].temperatureHigh);
+               var lowTemp = Math.round(data.daily.data[i].temperatureLow);
+               var iconValue = data.daily.data[i].icon;
+               var summary = data.daily.data[i].summary;
+               var wind = data.daily.data[i].windSpeed;
+               var pressure = data.daily.data[i].pressure;
+               var humidity = data.daily.data[i].humidity;
 
                $('#weather' + (i + 1)).html(summary);
                $('#wind' + (i + 1)).html("Wind: " + wind + " mph");
                $('#pressure' + (i + 1)).html("Pressure: " + pressure);
                $('#humidity' + (i + 1)).html("Humidity: " + humidity);
+               $("#temp" + (i +1)).html("<span class='high-temp'>" + (highTemp + (i + 1)) + "&deg;</span><span class='low-temp'>/  " + (lowTemp + (i + 1)) + "&#8457;</span>");
 
+
+               $(".toggle-div").hide();
+
+
+                $(".more-weather").on("click", function(e){
+
+                    e.preventDefault();
+
+                   $(".more-weather").hide();
+
+                   $(".toggle-div").slideDown();
+                });
 
                icons.forEach(function (icon) {
                        if (iconValue === icon.name) {
@@ -178,46 +220,33 @@
        .setLngLat([-98.4936, 29.4241])
        .addTo(map);
 
-   function onDragEnd() {
+   function onDragEnd(e) {
        var lngLat = marker.getLngLat();
        map.setCenter(lngLat);
 
        var lat = lngLat.lat.toString();
        var lng = lngLat.lng.toString();
 
-       console.log(lat.toString() + lng.toString());
-
        var newResponse = $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + lat + "," + lng + "");
 
-       newResponse.done(function () {
-
-           var highTemp1 = Math.round(newResponse.responseJSON.daily.data[0].temperatureHigh);
-           var lowTemp1 = Math.round(newResponse.responseJSON.daily.data[0].temperatureLow);
-
-           var highTemp2 = Math.round(newResponse.responseJSON.daily.data[1].temperatureHigh);
-           var lowTemp2 = Math.round(newResponse.responseJSON.daily.data[1].temperatureLow);
-
-           var highTemp3 = Math.round(newResponse.responseJSON.daily.data[2].temperatureHigh);
-           var lowTemp3 = Math.round(newResponse.responseJSON.daily.data[2].temperatureLow);
-
-           $("#temp1").html(highTemp1 + "&#8457; / " + lowTemp1 + "&#8457;");
-           $("#temp2").html(highTemp2 + "&#8457; / " + lowTemp2 + "&#8457;");
-           $("#temp3").html(highTemp3 + "&#8457; / " + lowTemp3 + "&#8457;");
-
+       newResponse.done(function (data) {
 
 
            for (var i = 0; i < 3; i++) {
-               var iconValue = newResponse.responseJSON.daily.data[i].icon;
-               var summary = newResponse.responseJSON.daily.data[i].summary;
-               var wind = newResponse.responseJSON.daily.data[i].windSpeed;
-               var pressure = newResponse.responseJSON.daily.data[i].pressure;
-               var humidity = newResponse.responseJSON.daily.data[i].humidity;
+
+               var highTemp = Math.round(data.daily.data[i].temperatureHigh);
+               var lowTemp = Math.round(data.daily.data[i].temperatureLow);
+               var iconValue = data.daily.data[i].icon;
+               var summary = data.daily.data[i].summary;
+               var wind = data.daily.data[i].windSpeed;
+               var pressure = data.daily.data[i].pressure;
+               var humidity = data.daily.data[i].humidity;
 
                $('#weather' + (i + 1)).html(summary);
                $('#wind' + (i + 1)).html("Wind: " + wind + " mph");
                $('#pressure' + (i + 1)).html("Pressure: " + pressure);
                $('#humidity' + (i + 1)).html("Humidity: " + humidity);
-
+               $("#temp" + (i +1)).html(("High: " + (highTemp + (i + 1))) + "&#8457; / Low: " + (lowTemp + (i + 1)) + "&#8457;");
 
                icons.forEach(function (icon) {
                        if (iconValue === icon.name) {
@@ -244,34 +273,25 @@
            var lat = newCenter.lat.toString();
            var lng = newCenter.lng.toString();
            var newResponse = $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + lat + "," + lng + "");
-           newResponse.done(function () {
-
-               var highTemp1 = Math.round(newResponse.responseJSON.daily.data[0].temperatureHigh);
-               var lowTemp1 = Math.round(newResponse.responseJSON.daily.data[0].temperatureLow);
-
-               var highTemp2 = Math.round(newResponse.responseJSON.daily.data[1].temperatureHigh);
-               var lowTemp2 = Math.round(newResponse.responseJSON.daily.data[1].temperatureLow);
-
-               var highTemp3 = Math.round(newResponse.responseJSON.daily.data[2].temperatureHigh);
-               var lowTemp3 = Math.round(newResponse.responseJSON.daily.data[2].temperatureLow);
-
-               $("#temp1").html(highTemp1 + "&#8457; / " + lowTemp1 + "&#8457;");
-               $("#temp2").html(highTemp2 + "&#8457; / " + lowTemp2 + "&#8457;");
-               $("#temp3").html(highTemp3 + "&#8457; / " + lowTemp3 + "&#8457;");
-
+           newResponse.done(function (data) {
 
 
                for (var i = 0; i < 3; i++) {
-                   var iconValue = newResponse.responseJSON.daily.data[i].icon;
-                   var summary = newResponse.responseJSON.daily.data[i].summary;
-                   var wind = newResponse.responseJSON.daily.data[i].windSpeed;
-                   var pressure = newResponse.responseJSON.daily.data[i].pressure;
-                   var humidity = newResponse.responseJSON.daily.data[i].humidity;
+                   var highTemp = Math.round(data.daily.data[i].temperatureHigh);
+                   var lowTemp = Math.round(data.daily.data[i].temperatureLow);
+
+
+                   var iconValue = data.daily.data[i].icon;
+                   var summary = data.daily.data[i].summary;
+                   var wind = data.daily.data[i].windSpeed;
+                   var pressure = data.daily.data[i].pressure;
+                   var humidity = data.daily.data[i].humidity;
 
                    $('#weather' + (i + 1)).html(summary);
                    $('#wind' + (i + 1)).html("Wind: " + wind + " mph");
                    $('#pressure' + (i + 1)).html("Pressure: " + pressure);
                    $('#humidity' + (i + 1)).html("Humidity: " + humidity);
+                   $("#temp" + (i +1)).html(("High: " + (highTemp + (i + 1))) + "&#8457; / Low: " + (lowTemp + (i + 1)) + "&#8457;");
 
 
                    icons.forEach(function (icon) {
