@@ -1,264 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>WEATHER MAP PROJECT - MOONRISE KINGDOM</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link href='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
+    <head>
+        <meta charset="UTF-8">
+        <title>WEATHER MAP PROJECT - MOONRISE KINGDOM</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <link href='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
 
-    <style>
+        <style>
 
-        body {
-            background-color: #9e9e9e3d;
-            color: darkblue;
-        }
+            body {
+                background-color: #9e9e9e3d;
+                color: darkblue;
+            }
 
-        a {
-            font-weight: normal;
-            font-size: .85em;
-            text-transform: uppercase;
-            color: #eca557;
-        }
+            a {
+                font-weight: normal;
+                font-size: .85em;
+                text-transform: uppercase;
+                color: #eca557;
+            }
 
-        .app-title {
-            font-weight: 300;
-        }
+            .bg-color {
+                background-color: ghostwhite;
+            }
 
-        .title {
-            background-color: #fff;
-        }
+            .app-title {
+                font-weight: 300;
+            }
 
-        .container {
-            max-width: 1000px;
-        }
+            .title {
+                background-color: #fff;
+            }
 
-        .high-temp {
+            .container {
+                max-width: 1000px;
+            }
 
-            font-size: 2.25em;
-            font-weight: lighter;
-        }
+            .high-temp {
 
-        .low-temp {
+                font-size: 2.25em;
+                font-weight: lighter;
+            }
 
-            font-size: .75em;
-            font-weight: lighter;
-            color: dimgrey;
-        }
+            .low-temp {
+
+                font-size: .75em;
+                font-weight: lighter;
+                color: dimgrey;
+            }
 
 
-    </style>
-</head>
-<body>
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.min.js'></script>
-<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.css' type='text/css' />
+        </style>
+    </head>
+    <body>
+        <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.min.js'></script>
+        <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.css' type='text/css' />
 
-<div class="container title">
-    <h1 class ="text-center app-title">Weather Map</h1>
-    <!--<div class="test"><span>3 Day Forecast for </span><a href="#" id="next-3-days">Next 3 Days</a></div>-->
-<div class="row title">
-    <div class="col-12 col-md-4 border">
-        <h3 id="temp1"></h3>
-        <image id="icon1" class="d-none d-sm-block"></image>
-        <h6 id="weather1"></h6>
-        <a href="#" class="more-weather ">More</a>
+        <div class="container bg-color">
+            <h1 class ="text-center app-title bg-color">Weather Map</h1>
+        <div class="row title">
+            <div class="col-12 col-md-4 border bg-color">
+                <h3 id="temp1"></h3>
+                <image id="icon1" class="d-none d-sm-block"></image>
+                <h6 id="weather1"></h6>
+                <a href="#" class="more-weather ">More</a>
+                <div class="toggle-div">
+                    <h6 id="humidity1"></h6>
+                    <h6 id="wind1"></h6>
+                    <h6 id="pressure1"></h6>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 border bg-color">
+                <h3 id="temp2" ></h3>
+                <image id="icon2" class="d-none d-sm-block" ></image>
+                <h6 id="weather2" ></h6>
+                <h6><a href="#" class="more-weather ">More</a></h6>
 
-        <div class="toggle-div">
-            <h6 id="humidity1"></h6>
-            <h6 id="wind1"></h6>
-            <h6 id="pressure1"></h6>
-        </div> <!--end of test div-->
-    </div>
-    <div class="col-12 col-md-4">
-        <h3 id="temp2" ></h3>
-        <image id="icon2" class="d-none d-sm-block" ></image>
-        <h6 id="weather2" ></h6>
-        <h6><a href="#" class="more-weather ">More</a></h6>
+                <div class="toggle-div">
+                    <h6 id="humidity2" ></h6>
+                    <h6 id="wind2" ></h6>
+                    <h6 id="pressure2" ></h6>
+                </div> <!--end of test div-->
+            </div>
+            <div class="col-12 col-md-4 border bg-color">
+                <h3 id="temp3" ></h3>
+                <image id="icon3" class="d-none d-sm-block"></image>
+                <h6 id="weather3" ></h6>
+                <h6><a href="#" class="more-weather">More</a></h6>
 
-        <div class="toggle-div">
-            <h6 id="humidity2" ></h6>
-            <h6 id="wind2" ></h6>
-            <h6 id="pressure2" ></h6>
-        </div> <!--end of test div-->
-    </div>
-    <div class="col-12 col-md-4">
-        <h3 id="temp3" ></h3>
-        <image id="icon3" class="d-none d-sm-block"></image>
-        <h6 id="weather3" ></h6>
-        <h6><a href="#" class="more-weather">More</a></h6>
+                <div class="toggle-div">
+                    <h6 id="humidity3" ></h6>
+                    <h6 id="wind3" ></h6>
+                    <h6 id="pressure3" ></h6>
+                </div>
 
-        <div class="toggle-div">
-            <h6 id="humidity3" ></h6>
-            <h6 id="wind3" ></h6>
-            <h6 id="pressure3" ></h6>
+            </div>
+
+            <div id='map' style='width: 100%; height: 450px;'></div>
+
+            </div><!-- end of row -->
+            <!-- map div -->
+        </div><!--end of wrapper container-->
+
+
+
+
+
+
+
         </div>
+        <script
+                src="https://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+           <script src='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+        <script src="js/keys.js"></script>
+        <script>
 
-    </div>
+           var response =  $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/29.4241,-98.4936");
 
-    <div id='map' style='width: 100%; height: 450px;'></div>
+           var icons = [
+               {
+                   name: 'clear-day',
+                   image: "img/icons/animated/day.svg"
+               },
+               {
+                   name: 'clear-night',
+                   image: "img/icons/static/night.svg"
+               },
+               {
+                   name: 'rain',
+                   image: "img/icons/animated/rainy-1.svg"
+               },
+               {
+                   name: 'snow',
+                   image: "img/icons/animated/snowy-1.svg"
+               },
+               {
+                   name: 'sleet',
+                   image: "img/icons/animated/snowy-2.svg"
+               },
+               {
+                   name: 'wind',
+                   image: "img/icons/animated/day.svg"
+               },
+               {
+                   name: 'fog',
+                   image: "img/icons/animated/day.svg"
+               },
+               {
+                   name: 'cloudy',
+                   image: "img/icons/animated/cloudy.svg"
+               },
+               {
+                   name: 'partly-cloudy-day',
+                   image: "img/icons/animated/cloudy-day-1.svg"
+               },
+               {
+                   name: 'partly-cloudy-night',
+                   image: "img/icons/animated/cloudy-night-1.svg"
+               }
 
-    </div><!-- end of row -->
-    <!-- map div -->
-</div><!--end of wrapper container-->
-
-
-
-
-
-
-
-</div>
-<script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-   <script src='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
-<script src="js/keys.js"></script>
-<script>
-
-   var response =  $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/29.4241,-98.4936");
-
-   var icons = [
-       {
-           name: 'clear-day',
-           image: "img/icons/animated/day.svg"
-       },
-       {
-           name: 'clear-night',
-           image: "img/icons/static/night.svg"
-       },
-       {
-           name: 'rain',
-           image: "img/icons/animated/rainy-1.svg"
-       },
-       {
-           name: 'snow',
-           image: "img/icons/animated/snowy-1.svg"
-       },
-       {
-           name: 'sleet',
-           image: "img/icons/animated/snowy-2.svg"
-       },
-       {
-           name: 'wind',
-           image: "img/icons/animated/day.svg"
-       },
-       {
-           name: 'fog',
-           image: "img/icons/animated/day.svg"
-       },
-       {
-           name: 'cloudy',
-           image: "img/icons/animated/cloudy.svg"
-       },
-       {
-           name: 'partly-cloudy-day',
-           image: "img/icons/animated/cloudy-day-1.svg"
-       },
-       {
-           name: 'partly-cloudy-night',
-           image: "img/icons/animated/cloudy-night-1.svg"
-       }
-
-   ];
+           ];
 
 
-       function getWeather(resp){
+               function getWeather(resp){
 
-       resp.done(function (data) {
+               resp.done(function (data) {
 
-           for (var i = 0; i < 3; i++) {
-               var highTemp = Math.round(data.daily.data[i].temperatureHigh);
-               var lowTemp = Math.round(data.daily.data[i].temperatureLow);
-               var iconValue = data.daily.data[i].icon;
-               var summary = data.daily.data[i].summary;
-               var wind = data.daily.data[i].windSpeed;
-               var pressure = data.daily.data[i].pressure;
-               var humidity = data.daily.data[i].humidity;
+                   for (var i = 0; i < 3; i++) {
+                       var highTemp = Math.round(data.daily.data[i].temperatureHigh);
+                       var lowTemp = Math.round(data.daily.data[i].temperatureLow);
+                       var iconValue = data.daily.data[i].icon;
+                       var summary = data.daily.data[i].summary;
+                       var wind = data.daily.data[i].windSpeed;
+                       var pressure = data.daily.data[i].pressure;
+                       var humidity = data.daily.data[i].humidity;
 
-               $('#weather' + (i + 1)).html(summary);
-               $('#wind' + (i + 1)).html("Wind: " + wind + " mph");
-               $('#pressure' + (i + 1)).html("Pressure: " + pressure);
-               $('#humidity' + (i + 1)).html("Humidity: " + humidity);
-               $("#temp" + (i + 1)).html("<span class='high-temp'>" + (highTemp + (i + 1)) + "&deg;</span><span class='low-temp'>/  " + (lowTemp + (i + 1)) + "&#8457;</span>");
-
-
-               $(".toggle-div").hide();
+                       $('#weather' + (i + 1)).html(summary);
+                       $('#wind' + (i + 1)).html("Wind: " + wind + " mph");
+                       $('#pressure' + (i + 1)).html("Pressure: " + pressure);
+                       $('#humidity' + (i + 1)).html("Humidity: " + humidity);
+                       $("#temp" + (i + 1)).html("<span class='high-temp'>" + (highTemp + (i + 1)) + "&deg;</span><span class='low-temp'>/  " + (lowTemp + (i + 1)) + "&#8457;</span>");
 
 
-               $(".more-weather").on("click", function (e) {
+                       $(".toggle-div").hide();
 
-                   $(".more-weather").hide();
-                   $(".toggle-div").slideDown();
+
+                       $(".more-weather").on("click", function (e) {
+
+                           $(".more-weather").hide();
+                           $(".toggle-div").slideDown();
+
+                       });
+
+                       icons.forEach(function (icon) {
+                               if (iconValue === icon.name) {
+                                   $('#icon' + (i + 1)).attr('src', icon.image)
+                               }
+                           }
+                       )
+                   }
 
                });
-
-               icons.forEach(function (icon) {
-                       if (iconValue === icon.name) {
-                           $('#icon' + (i + 1)).attr('src', icon.image)
-                       }
-                   }
-               )
            }
 
-       });
-   }
 
 
-
-   // Generating default 3 Day forecast //
-   getWeather(response);
-
-
-    // Coordinates for San Antonio //
-   var defaultCoor = [-98.4936, 29.4241];
-
-   mapboxgl.accessToken = mapBoxToken;
-   var map = new mapboxgl.Map({
-       container: 'map',
-       style: 'mapbox://styles/mapbox/satellite-streets-v9',
-       zoom: 4,
-       center: defaultCoor
-   });
-
-    // Default map to show marker on San Antonio //
-   var marker = new mapboxgl.Marker({
-       draggable: true
-   })
-       .setLngLat([-98.4936, 29.4241])
-       .addTo(map);
-
-   function onDragEnd(e) {
-       var lngLat = marker.getLngLat();
-       map.setCenter(lngLat);
-
-       var lat = lngLat.lat.toString();
-       var lng = lngLat.lng.toString();
-
-       var markerDragResponse = $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + lat + "," + lng + "");
-
-       getWeather(markerDragResponse);
-   }
+           // Generating default 3 Day forecast //
+           getWeather(response);
 
 
-   marker.on('dragend', onDragEnd);
+            // Coordinates for San Antonio //
+           var defaultCoor = [-98.4936, 29.4241];
 
-   map.addControl(new MapboxGeocoder({
-       accessToken: mapboxgl.accessToken
-   }));
+           mapboxgl.accessToken = mapBoxToken;
+           var map = new mapboxgl.Map({
+               container: 'map',
+               style: 'mapbox://styles/mapbox/satellite-streets-v9',
+               zoom: 4,
+               center: defaultCoor
+           });
 
-   $(document).keyup(function(event) {
-       if(event.which === 13){
-           var newCenter = map.getCenter();
-           var lat = newCenter.lat.toString();
-           var lng = newCenter.lng.toString();
-           var searchResponse = $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + lat + "," + lng + "");
-           getWeather(searchResponse);
-       }
-   });
+            // Default map to show marker on San Antonio //
+           var marker = new mapboxgl.Marker({
+               draggable: true
+           })
+               .setLngLat([-98.4936, 29.4241])
+               .addTo(map);
 
-</script>
+           function onDragEnd(e) {
+               var lngLat = marker.getLngLat();
+               map.setCenter(lngLat);
 
-</body>
+               var lat = lngLat.lat.toString();
+               var lng = lngLat.lng.toString();
+
+               var markerDragResponse = $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + lat + "," + lng + "");
+
+               getWeather(markerDragResponse);
+           }
+
+
+           marker.on('dragend', onDragEnd);
+
+           map.addControl(new MapboxGeocoder({
+               accessToken: mapboxgl.accessToken
+           }));
+
+           $(document).keyup(function(event) {
+               if(event.which === 13){
+                   var newCenter = map.getCenter();
+                   var lat = newCenter.lat.toString();
+                   var lng = newCenter.lng.toString();
+                   var searchResponse = $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + lat + "," + lng + "");
+                   getWeather(searchResponse);
+               }
+           });
+
+        </script>
+
+    </body>
 </html>
