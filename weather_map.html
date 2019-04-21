@@ -20,6 +20,10 @@
             color: #eca557;
         }
 
+        .app-title {
+            font-weight: 300;
+        }
+
         .title {
             background-color: #fff;
         }
@@ -41,6 +45,7 @@
             color: dimgrey;
         }
 
+
     </style>
 </head>
 <body>
@@ -48,14 +53,14 @@
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.css' type='text/css' />
 
 <div class="container title">
-    <h1 class ="text-center title">Weather Map</h1>
+    <h1 class ="text-center app-title">Weather Map</h1>
     <!--<div class="test"><span>3 Day Forecast for </span><a href="#" id="next-3-days">Next 3 Days</a></div>-->
 <div class="row title">
     <div class="col-12 col-md-4 border">
         <h3 id="temp1"></h3>
         <image id="icon1" class="d-none d-sm-block"></image>
         <h6 id="weather1"></h6>
-        <h6><a href="#" class="more-weather d-none d-sm-block">More</a></h6>
+        <a href="#" class="more-weather ">More</a>
 
         <div class="toggle-div">
             <h6 id="humidity1"></h6>
@@ -67,7 +72,7 @@
         <h3 id="temp2" ></h3>
         <image id="icon2" class="d-none d-sm-block" ></image>
         <h6 id="weather2" ></h6>
-        <h6><a href="#" class="more-weather d-none d-sm-block">More</a></h6>
+        <h6><a href="#" class="more-weather ">More</a></h6>
 
         <div class="toggle-div">
             <h6 id="humidity2" ></h6>
@@ -79,7 +84,7 @@
         <h3 id="temp3" ></h3>
         <image id="icon3" class="d-none d-sm-block"></image>
         <h6 id="weather3" ></h6>
-        <h6><a href="#" class="more-weather d-none d-sm-block">More</a></h6>
+        <h6><a href="#" class="more-weather">More</a></h6>
 
         <div class="toggle-div">
             <h6 id="humidity3" ></h6>
@@ -121,47 +126,47 @@
        },
        {
            name: 'clear-night',
-           image: "img/icons/static/night.svg"// path;
+           image: "img/icons/static/night.svg"
        },
        {
            name: 'rain',
-           image: "img/icons/animated/rainy-1.svg"// path;
+           image: "img/icons/animated/rainy-1.svg"
        },
        {
            name: 'snow',
-           image: "img/icons/animated/snowy-1.svg"// path;
+           image: "img/icons/animated/snowy-1.svg"
        },
        {
            name: 'sleet',
-           image: "img/icons/animated/snowy-2.svg"// path;
+           image: "img/icons/animated/snowy-2.svg"
        },
        {
            name: 'wind',
-           image: "img/icons/animated/day.svg"// CHANGE THIS LATER
+           image: "img/icons/animated/day.svg"
        },
        {
            name: 'fog',
-           image: "img/icons/animated/day.svg"// CHANGE THIS LATER;
+           image: "img/icons/animated/day.svg"
        },
        {
            name: 'cloudy',
-           image: "img/icons/animated/cloudy.svg"// path;
+           image: "img/icons/animated/cloudy.svg"
        },
        {
            name: 'partly-cloudy-day',
-           image: "img/icons/animated/cloudy-day-1.svg"// path;
+           image: "img/icons/animated/cloudy-day-1.svg"
        },
        {
            name: 'partly-cloudy-night',
-           image: "img/icons/animated/cloudy-night-1.svg"// path;
+           image: "img/icons/animated/cloudy-night-1.svg"
        }
 
    ];
 
-       response.done(function (data) {
 
-           console.log(data);
+       function getWeather(resp){
 
+       resp.done(function (data) {
 
            for (var i = 0; i < 3; i++) {
                var highTemp = Math.round(data.daily.data[i].temperatureHigh);
@@ -176,20 +181,18 @@
                $('#wind' + (i + 1)).html("Wind: " + wind + " mph");
                $('#pressure' + (i + 1)).html("Pressure: " + pressure);
                $('#humidity' + (i + 1)).html("Humidity: " + humidity);
-               $("#temp" + (i +1)).html("<span class='high-temp'>" + (highTemp + (i + 1)) + "&deg;</span><span class='low-temp'>/  " + (lowTemp + (i + 1)) + "&#8457;</span>");
+               $("#temp" + (i + 1)).html("<span class='high-temp'>" + (highTemp + (i + 1)) + "&deg;</span><span class='low-temp'>/  " + (lowTemp + (i + 1)) + "&#8457;</span>");
 
 
                $(".toggle-div").hide();
 
 
-                $(".more-weather").on("click", function(e){
-
-                    e.preventDefault();
+               $(".more-weather").on("click", function (e) {
 
                    $(".more-weather").hide();
-
                    $(".toggle-div").slideDown();
-                });
+
+               });
 
                icons.forEach(function (icon) {
                        if (iconValue === icon.name) {
@@ -200,9 +203,15 @@
            }
 
        });
+   }
 
 
 
+   // Generating default 3 Day forecast //
+   getWeather(response);
+
+
+    // Coordinates for San Antonio //
    var defaultCoor = [-98.4936, 29.4241];
 
    mapboxgl.accessToken = mapBoxToken;
@@ -213,7 +222,7 @@
        center: defaultCoor
    });
 
-
+    // Default map to show marker on San Antonio //
    var marker = new mapboxgl.Marker({
        draggable: true
    })
@@ -227,37 +236,9 @@
        var lat = lngLat.lat.toString();
        var lng = lngLat.lng.toString();
 
-       var newResponse = $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + lat + "," + lng + "");
+       var markerDragResponse = $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + lat + "," + lng + "");
 
-       newResponse.done(function (data) {
-
-
-           for (var i = 0; i < 3; i++) {
-
-               var highTemp = Math.round(data.daily.data[i].temperatureHigh);
-               var lowTemp = Math.round(data.daily.data[i].temperatureLow);
-               var iconValue = data.daily.data[i].icon;
-               var summary = data.daily.data[i].summary;
-               var wind = data.daily.data[i].windSpeed;
-               var pressure = data.daily.data[i].pressure;
-               var humidity = data.daily.data[i].humidity;
-
-               $('#weather' + (i + 1)).html(summary);
-               $('#wind' + (i + 1)).html("Wind: " + wind + " mph");
-               $('#pressure' + (i + 1)).html("Pressure: " + pressure);
-               $('#humidity' + (i + 1)).html("Humidity: " + humidity);
-               $("#temp" + (i +1)).html(("High: " + (highTemp + (i + 1))) + "&#8457; / Low: " + (lowTemp + (i + 1)) + "&#8457;");
-
-               icons.forEach(function (icon) {
-                       if (iconValue === icon.name) {
-                           $('#icon' + (i + 1)).attr('src', icon.image)
-                       }
-                   }
-               )
-           }
-
-       });
-
+       getWeather(markerDragResponse);
    }
 
 
@@ -269,40 +250,11 @@
 
    $(document).keyup(function(event) {
        if(event.which === 13){
-        var newCenter = map.getCenter()
+           var newCenter = map.getCenter();
            var lat = newCenter.lat.toString();
            var lng = newCenter.lng.toString();
-           var newResponse = $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + lat + "," + lng + "");
-           newResponse.done(function (data) {
-
-
-               for (var i = 0; i < 3; i++) {
-                   var highTemp = Math.round(data.daily.data[i].temperatureHigh);
-                   var lowTemp = Math.round(data.daily.data[i].temperatureLow);
-
-
-                   var iconValue = data.daily.data[i].icon;
-                   var summary = data.daily.data[i].summary;
-                   var wind = data.daily.data[i].windSpeed;
-                   var pressure = data.daily.data[i].pressure;
-                   var humidity = data.daily.data[i].humidity;
-
-                   $('#weather' + (i + 1)).html(summary);
-                   $('#wind' + (i + 1)).html("Wind: " + wind + " mph");
-                   $('#pressure' + (i + 1)).html("Pressure: " + pressure);
-                   $('#humidity' + (i + 1)).html("Humidity: " + humidity);
-                   $("#temp" + (i +1)).html(("High: " + (highTemp + (i + 1))) + "&#8457; / Low: " + (lowTemp + (i + 1)) + "&#8457;");
-
-
-                   icons.forEach(function (icon) {
-                               if (iconValue === icon.name) {
-                                   $('#icon' + (i + 1)).attr('src', icon.image)
-                               }
-                           }
-                   )
-               }
-
-           });
+           var searchResponse = $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + lat + "," + lng + "");
+           getWeather(searchResponse);
        }
    });
 
